@@ -1,0 +1,19 @@
+{
+    "name":"gebo-proxy-action",
+    "email":"gebo-proxy-action@example.com",
+    "domain":"https://localhost",
+    "port":3000,
+    "httpsPort":3443,
+    "docs": "docs",
+    "testEmail": "gebo-proxy-action-test@example.com",
+    "proxyActions": {
+        "someAction": {
+            "gebo": "https://somegebo.com",
+            "access_token": "SomeAccessToken123"
+        },
+        "someOtherAction": {
+            "gebo": "https://somegebo.com",
+            "access_token": "SomeOtherAccessToken123"
+        }
+    }
+}
