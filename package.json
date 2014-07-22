@@ -1,0 +1,46 @@
+{
+  "name": "gebo-proxy-action",
+  "description": "Gebo message-forwarding actions",
+  "version": "0.0.0",
+  "homepage": "https://github.com/RaphaelDeLaGhetto/gebo-proxy-action",
+  "author": {
+    "name": "Daniel Bidulock",
+    "email": "daniel@capitolhill.ca"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RaphaelDeLaGhetto/gebo-proxy-action.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RaphaelDeLaGhetto/gebo-proxy-action/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/RaphaelDeLaGhetto/gebo-proxy-action/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "gebo-proxy-action.js",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "scripts": {
+    "test": "grunt nodeunit"
+  },
+  "dependencies": {
+    "gebo-mongoose-connection": "*",
+    "gebo-performatives": "0.0.9",
+    "gebo-utils": "*",
+    "nconf": "*",
+    "q": "*"
+  },
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-contrib-nodeunit": "*"
+  },
+  "keywords": [
+    "gebo",
+    "agent",
+    "action"
+  ]
+}
