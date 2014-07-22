@@ -12,7 +12,7 @@
             "access_token": "SomeAccessToken123"
         },
         "someOtherAction": {
-            "gebo": "https://somegebo.com",
+            "gebo": "https://someothergebo.com",
             "access_token": "SomeOtherAccessToken123"
         }
     }
