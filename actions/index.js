@@ -38,7 +38,7 @@ module.exports = function() {
               });
           }
           else {
-            deferred.reject('I don\'t know how to ' + message.action);
+            deferred.resolve({ error: 'I don\'t know how to ' + message.action });
           }
         }
         else {
