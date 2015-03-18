@@ -33,17 +33,19 @@ $ grunt nodeunit
 
 ## Configure
 
-Set the destination gebo and access_token for every proxy action in
+Set the destination gebo, access_token, and action for every friendo behind the proxy in
 `gebo.json`. E.g.,
 
 ```
-    "proxyActions": {
-        "someAction": {
+    "directory": {
+        "gebo@example.com": {
             "gebo": "https://somegebo.com",
+            "actions": ["bakeAPie", "cleanTheToilet"],
             "access_token": "SomeAccessToken123"
         },
-        "someOtherAction": {
-            "gebo": "https://someothergebo.com",
+        "anothergebo@example.com": {
+            "gebo": "https://localhost:3443",
+            "actions": ["hootLikeAnOwl", "cleanTheToilet", "getJiggyWithIt"],
             "access_token": "SomeOtherAccessToken123"
         }
     }
