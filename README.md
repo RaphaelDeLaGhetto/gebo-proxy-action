@@ -1,34 +1,12 @@
 gebo-proxy-action
-================
+=================
 
 Gebo message-forwarding actions
 
-## Setup
-
-### your database (MongoDB)
-
-Install MongoDB on your system, if you haven't already:
-
-* [http://docs.mongodb.org/manual/installation/](http://docs.mongodb.org/manual/installation/)
-
-Start MongoDB by executing this at the command line:
+## Install
 
 ```
-$ sudo service mongodb start
-```
-
-### your actions module 
-
-First, install your npm modules:
-
-```
-$ sudo npm install
-```
-
-## Test 
-
-```
-$ grunt nodeunit
+npm install gebo-proxy-action
 ```
 
 ## Configure
@@ -40,12 +18,22 @@ Set the destination gebo, access_token, and action for every friendo behind the 
     "directory": {
         "gebo@example.com": {
             "gebo": "https://somegebo.com",
-            "actions": ["bakeAPie", "cleanTheToilet"],
+            "resources": {
+                "bakeAPie": { "isAction": true, "read": false, "write": false, "execute": true },
+                "save": { "isAction": true, "read": false, "write": true, "execute": false },
+                "manifesto": { "read": true, "write": true, "execute": false },
+                "cleanTheToilet": { "isAction": true, "read": false, "write": false, "execute": true }
+            },
             "access_token": "SomeAccessToken123"
         },
         "anothergebo@example.com": {
             "gebo": "https://localhost:3443",
-            "actions": ["hootLikeAnOwl", "cleanTheToilet", "getJiggyWithIt"],
+            "resources": {
+                "loveSongs": { "read": true, "write": true, "execute": false },
+                "hootLikeAnOwl": { "isAction": true, "read": false, "write": false, "execute": true },
+                "cleanTheToilet": { "isAction": true, "read": false, "write": false, "execute": true },
+                "getJiggyWithIt": { "isAction": true, "read": true, "write": false, "execute": false }
+            },
             "access_token": "SomeOtherAccessToken123"
         }
     }
@@ -55,10 +43,10 @@ Set the destination gebo, access_token, and action for every friendo behind the 
 
 ```
 var gebo = require('gebo-server')();
-gebo.enable(require('gebo-proxy-action'));
+var proxy = require('gebo-proxy-action');
+gebo.actions.forward = proxy.forward;
 ```
 
 ## License
 
-Copyright (c) 2014 Daniel Bidulock
 MIT
