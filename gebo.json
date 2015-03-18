@@ -9,12 +9,22 @@
     "directory": {
         "gebo@example.com": {
             "gebo": "https://somegebo.com",
-            "actions": ["bakeAPie", "cleanTheToilet"],
+            "resources": {
+                "bakeAPie": { "isAction": true, "read": false, "write": false, "execute": true },
+                "save": { "isAction": true, "read": false, "write": true, "execute": false },
+                "manifesto": { "read": true, "write": true, "execute": false },
+                "cleanTheToilet": { "isAction": true, "read": false, "write": false, "execute": true }
+            },
             "access_token": "SomeAccessToken123"
         },
         "anothergebo@example.com": {
             "gebo": "https://localhost:3443",
-            "actions": ["hootLikeAnOwl", "cleanTheToilet", "getJiggyWithIt"],
+            "resources": {
+                "loveSongs": { "read": true, "write": true, "execute": false },
+                "hootLikeAnOwl": { "isAction": true, "read": false, "write": false, "execute": true },
+                "cleanTheToilet": { "isAction": true, "read": false, "write": false, "execute": true },
+                "getJiggyWithIt": { "isAction": true, "read": true, "write": false, "execute": false }
+            },
             "access_token": "SomeOtherAccessToken123"
         }
     }
