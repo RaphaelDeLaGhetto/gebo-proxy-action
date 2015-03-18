@@ -6,13 +6,15 @@
     "httpsPort":3443,
     "docs": "docs",
     "testEmail": "gebo-proxy-action-test@example.com",
-    "proxyActions": {
-        "someAction": {
+    "directory": {
+        "gebo@example.com": {
             "gebo": "https://somegebo.com",
+            "actions": ["bakeAPie", "cleanTheToilet"],
             "access_token": "SomeAccessToken123"
         },
-        "someOtherAction": {
-            "gebo": "https://someothergebo.com",
+        "anothergebo@example.com": {
+            "gebo": "https://localhost:3443",
+            "actions": ["hootLikeAnOwl", "cleanTheToilet", "getJiggyWithIt"],
             "access_token": "SomeOtherAccessToken123"
         }
     }
