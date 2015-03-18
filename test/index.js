@@ -150,7 +150,7 @@ exports.forward = {
                     access_token: 'abc123',
                 }).
             then(function(results) {
-                test.ok(false, 'Shouldn\'t get here');      
+                test.equal(results.error, 'I don\'t know how to someNonExistentAction');
                 test.done();
               }).
             catch(function(err) {

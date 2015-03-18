@@ -30,14 +30,10 @@ module.exports = function() {
     
         if (message.receiver && _directory[message.receiver]) {
 
-          //if (_proxyActions[message.action]) {
           if (_directory[message.receiver]) {
             // Swap out destination gebo and access token
-            //message.gebo = _proxyActions[message.action].gebo;
             message.gebo = _directory[message.receiver].gebo;
-            //message.access_token = _proxyActions[message.action].access_token;
             message.access_token = _directory[message.receiver].access_token;
-  
             message.sender = _proxyEmail;
 
             performatives.request(message, function(err, results) {
@@ -50,7 +46,7 @@ module.exports = function() {
               });
           }
           else {
-            deferred.reject('I don\'t know how to ' + message.action);
+            deferred.resolve({ error: 'I don\'t know how to ' + message.action });
           }
         }
         else {

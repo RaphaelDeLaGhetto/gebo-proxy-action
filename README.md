@@ -59,4 +59,4 @@ gebo.enable(require('gebo-proxy-action'));
 ## License
 
 Copyright (c) 2014 Daniel Bidulock
-MIT license.
+MIT
