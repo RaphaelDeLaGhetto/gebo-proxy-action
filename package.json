@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "gebo-mongoose-connection": "*",
-    "gebo-performatives": "0.0.9",
+    "gebo-performatives": "*",
     "gebo-utils": "*",
     "nconf": "*",
     "q": "*"
