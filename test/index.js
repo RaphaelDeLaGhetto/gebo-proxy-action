@@ -15,13 +15,19 @@ exports.onLoad =  {
 
     'Point all configured actions to the forward actions': function(test) {
         test.expect(7);
-        test.equal(Object.keys(actionModule.actions).length, 6);
-        test.equal(actionModule.bakeAPie, actionModule.forward);
-        test.equal(actionModule.save, actionModule.forward);
-        test.equal(actionModule.cleanTheToilet, actionModule.forward);
-        test.equal(actionModule.hootLikeAnOwl, actionModule.forward);
-        test.equal(actionModule.cleanTheToilet, actionModule.forward);
-        test.equal(actionModule.getJiggyWithIt, actionModule.forward);
+        test.equal(Object.keys(actionModule.actions).length, 8);
+        test.equal(actionModule.actions.bakeAPie, actionModule.actions.forward);
+        test.equal(actionModule.actions.save, actionModule.actions.forward);
+        test.equal(actionModule.actions.cleanTheToilet, actionModule.actions.forward);
+        test.equal(actionModule.actions.hootLikeAnOwl, actionModule.actions.forward);
+        test.equal(actionModule.actions.cleanTheToilet, actionModule.actions.forward);
+        test.equal(actionModule.actions.getJiggyWithIt, actionModule.actions.forward);
+        test.done();
+    },
+
+    'Should structure dot-notation actions approriately': function(test) {
+        test.expect(1);
+        test.equal(actionModule.actions.accountant.doTaxes, actionModule.actions.forward);
         test.done();
     },
 };

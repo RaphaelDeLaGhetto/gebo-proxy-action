@@ -23,8 +23,20 @@ module.exports = function() {
       });
 
     _actions.forEach(function(action) {
-        exports[action] = _forward;
+        var actionParts = action.split('.');
+        if (actionParts.length === 2) {
+          if (exports[actionParts[0]] === undefined) {
+            exports[actionParts[0]] = {};
+          }
+          exports[actionParts[0]][actionParts[1]]= _forward;
+        }
+        else {
+          exports[action] = _forward;
+        }
       });
+
+    // For testing
+    exports._actions = _actions;
 
     /**
      * Forward the message to the appropriate recipient
