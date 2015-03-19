@@ -35,9 +35,6 @@ module.exports = function() {
         }
       });
 
-    // For testing
-    exports._actions = _actions;
-
     /**
      * Forward the message to the appropriate recipient
      */

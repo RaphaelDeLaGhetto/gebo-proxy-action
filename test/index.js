@@ -15,7 +15,7 @@ exports.onLoad =  {
 
     'Point all configured actions to the forward actions': function(test) {
         test.expect(7);
-        test.equal(Object.keys(actionModule.actions).length, 8);
+        test.equal(Object.keys(actionModule.actions).length, 7);
         test.equal(actionModule.actions.bakeAPie, actionModule.actions.forward);
         test.equal(actionModule.actions.save, actionModule.actions.forward);
         test.equal(actionModule.actions.cleanTheToilet, actionModule.actions.forward);
