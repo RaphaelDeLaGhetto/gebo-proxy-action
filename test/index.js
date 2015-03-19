@@ -27,7 +27,6 @@ exports.onLoad =  {
 
     'Should structure dot-notation actions approriately': function(test) {
         test.expect(1);
-        console.log('actionModule.actions',actionModule.actions);
         test.equal(actionModule.actions.accountant.doTaxes, actionModule.actions.forward);
         test.done();
     },
