@@ -34,7 +34,8 @@
     "gebo-performatives": "*",
     "gebo-utils": "*",
     "nconf": "*",
-    "q": "*"
+    "q": "*",
+    "winston": "^0.9.0"
   },
   "devDependencies": {
     "grunt": "*",
