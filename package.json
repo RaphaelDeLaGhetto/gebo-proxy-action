@@ -28,6 +28,7 @@
     "test": "grunt nodeunit"
   },
   "dependencies": {
+    "extend": "^2.0.0",
     "gebo-mongoose-connection": "*",
     "gebo-performatives": "*",
     "gebo-utils": "*",
