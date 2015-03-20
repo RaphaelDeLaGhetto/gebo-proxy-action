@@ -11,10 +11,10 @@
             "gebo": "https://somegebo.com",
             "resources": {
                 "bakeAPie": { "isAction": true, "read": false, "write": false, "execute": true },
-                "save": { "isAction": true, "read": false, "write": true, "execute": false },
+                "save": { "expected": "text", "isAction": true, "read": false, "write": true, "execute": false },
                 "manifesto": { "read": true, "write": true, "execute": false },
-                "cleanTheToilet": { "isAction": true, "read": false, "write": false, "execute": true },
-                "accountant.doTaxes": { "isAction": true, "read": false, "write": false, "execute": true }
+                "cleanTheToilet": { "isAction": true, "read": false, "write": true, "execute": true },
+                "accountant.doTaxes": { "expected": "json", "isAction": true, "read": false, "write": true, "execute": true }
             },
             "access_token": "SomeAccessToken123"
         },
@@ -24,7 +24,7 @@
                 "loveSongs": { "read": true, "write": true, "execute": false },
                 "hootLikeAnOwl": { "isAction": true, "read": false, "write": false, "execute": true },
                 "cleanTheToilet": { "isAction": true, "read": false, "write": false, "execute": true },
-                "getJiggyWithIt": { "isAction": true, "read": true, "write": false, "execute": false }
+                "getJiggyWithIt": { "expected": "buffer", "isAction": true, "read": true, "write": false, "execute": false }
             },
             "access_token": "SomeOtherAccessToken123"
         }

@@ -1,4 +1,5 @@
 var performatives = require('gebo-performatives'),
+    extend = require('extend'),
     nconf = require('nconf'),
     q = require('q');
 
@@ -53,6 +54,9 @@ module.exports = function() {
             // The requesting agent isn't allowed to do anything yet
             var permitted = false;
 
+            // The expected return value
+            var expected;
+
             // Get this proxy's permissions
             var proxyPermissions = _directory[message.receiver].resources[verified.resource];
 
@@ -62,11 +66,13 @@ module.exports = function() {
                 verified.write === !!proxyPermissions.write &&
                 verified.execute === !!proxyPermissions.execute) {
               permitted = true;              
+              expected = proxyPermissions.expected;
             }
             // Apply permissions according to requested action for database resources
             else {
               // Get this proxy's permissions
               var proxyActionPermissions = _directory[message.receiver].resources[message.action];
+              expected = proxyActionPermissions.expected;
 
               // Gather the permissions required to perform the requested action
               //
@@ -92,11 +98,31 @@ module.exports = function() {
 
             // Forward the message if permitted
             if (permitted) {
-              performatives.request(message, function(err, results) {
+
+              // Determine if the message has a file attached.
+              // Super hokey
+              var fileKey;
+              Object.keys(message).forEach(function(key) {
+                    if (message[key].path && message[key].originalname && message[key].mimetype && message[key].size) {
+                      fileKey = key;
+                    }
+                });
+              if (fileKey) {
+                message.files = {};
+                message.files[fileKey] = {};
+                extend(true, message.files[fileKey], message[fileKey]);
+                delete message[fileKey]; 
+              }
+
+              var buffer = expected === 'buffer';
+              performatives.request(message, buffer, function(err, results) {
                     if (err) {
                       deferred.reject(err);
                     }
                     else {
+                      if (expected === undefined || expected === 'json') {
+                        results = JSON.parse(results);
+                      }
                       deferred.resolve(results);
                     }
                 });

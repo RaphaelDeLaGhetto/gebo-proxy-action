@@ -19,9 +19,9 @@ Set the destination gebo, access_token, and action for every friendo behind the 
         "gebo@example.com": {
             "gebo": "https://somegebo.com",
             "resources": {
-                "bakeAPie": { "isAction": true, "read": false, "write": false, "execute": true },
+                "bakeAPie": { "expected": "json", "isAction": true, "read": false, "write": false, "execute": true },
                 "save": { "isAction": true, "read": false, "write": true, "execute": false },
-                "manifesto": { "read": true, "write": true, "execute": false },
+                "manifesto": { "expected": "buffer", "read": true, "write": true, "execute": false },
                 "cleanTheToilet": { "isAction": true, "read": false, "write": false, "execute": true }
             },
             "access_token": "SomeAccessToken123"
@@ -29,7 +29,7 @@ Set the destination gebo, access_token, and action for every friendo behind the 
         "anothergebo@example.com": {
             "gebo": "https://localhost:3443",
             "resources": {
-                "loveSongs": { "read": true, "write": true, "execute": false },
+                "loveSongs": { "expected": "buffer", "read": true, "write": true, "execute": false },
                 "hootLikeAnOwl": { "isAction": true, "read": false, "write": false, "execute": true },
                 "cleanTheToilet": { "isAction": true, "read": false, "write": false, "execute": true },
                 "getJiggyWithIt": { "isAction": true, "read": true, "write": false, "execute": false }
