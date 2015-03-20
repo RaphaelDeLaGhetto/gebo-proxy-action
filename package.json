@@ -36,7 +36,8 @@
   },
   "devDependencies": {
     "grunt": "*",
-    "grunt-contrib-nodeunit": "*"
+    "grunt-contrib-nodeunit": "*",
+    "sinon": "^1.14.1"
   },
   "keywords": [
     "gebo",
