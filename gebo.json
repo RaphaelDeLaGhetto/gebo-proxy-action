@@ -6,6 +6,7 @@
     "httpsPort":3443,
     "docs": "docs",
     "testEmail": "gebo-proxy-action-test@example.com",
+    "logLevel": "trace",
     "directory": {
         "gebo@example.com": {
             "gebo": "https://somegebo.com",
