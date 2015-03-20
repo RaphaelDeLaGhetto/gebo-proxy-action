@@ -1,11 +1,15 @@
 var performatives = require('gebo-performatives'),
-    extend = require('extend'),
+    fs = require('fs-extra'),
     nconf = require('nconf'),
-    q = require('q');
+    q = require('q'),
+    winston = require('winston');
 
 module.exports = function() {
 
     nconf.file({ file: './gebo.json' });
+    var logLevel = nconf.get('logLevel');
+    var logger = new (winston.Logger)({ transports: [ new (winston.transports.Console)({ colorize: true }) ] });
+
 
     var _proxyEmail = nconf.get('email');
 
@@ -99,6 +103,8 @@ module.exports = function() {
             // Forward the message if permitted
             if (permitted) {
 
+              var buffer = expected === 'buffer';
+
               // Determine if the message has a file attached.
               // Super hokey
               var fileKey;
@@ -107,25 +113,58 @@ module.exports = function() {
                       fileKey = key;
                     }
                 });
+
+              // File attached
               if (fileKey) {
                 message.files = {};
                 message.files[fileKey] = {};
-                extend(true, message.files[fileKey], message[fileKey]);
-                delete message[fileKey]; 
-              }
 
-              var buffer = expected === 'buffer';
-              performatives.request(message, buffer, function(err, results) {
+                var destDir = message[fileKey].path + '_dir/';
+                var dest = destDir + message[fileKey].originalname;
+                fs.move(message[fileKey].path, dest, { clobber: true }, function(err) {
                     if (err) {
-                      deferred.reject(err);
+                      if (logLevel === 'trace') logger.error('fs.move', err);
+                      deferred.resolve({ error: err });
                     }
                     else {
-                      if (expected === undefined || expected === 'json') {
-                        results = JSON.parse(results);
-                      }
-                      deferred.resolve(results);
+                      message.files[fileKey].path = dest;
+                      delete message[fileKey]; 
+
+                      performatives.request(message, buffer, function(err, results) {
+                            if (err) {
+                              if (logLevel === 'trace') logger.error('performatives.request', err);
+                              deferred.reject(err);
+                            }
+                            else {
+                              fs.remove(destDir, function(err) {
+                                    if (err) {
+                                      if (logLevel === 'trace') logger.error('performatives.request', err);
+                                    }
+                                    if (expected === undefined || expected === 'json') {
+                                      results = JSON.parse(results);
+                                    }
+                                    deferred.resolve(results);
+                                });
+                            }
+                        });
                     }
-                });
+                  });
+              }
+              // No file attached
+              else {
+                performatives.request(message, buffer, function(err, results) {
+                      if (err) {
+                        if (logLevel === 'trace') logger.error('performatives.request', err);
+                        deferred.reject(err);
+                      }
+                      else {
+                        if (expected === undefined || expected === 'json') {
+                          results = JSON.parse(results);
+                        }
+                        deferred.resolve(results);
+                      }
+                  });
+              }
             }
             else {
               deferred.reject('You are not permitted to request or propose that action');

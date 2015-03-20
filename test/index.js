@@ -1,7 +1,7 @@
 'use strict';
 
 var actionModule = require('..'),
-    extend = require('extend'),
+    fs = require('fs-extra'),
     nconf = require('nconf'),
     performatives = require('gebo-performatives'),
     q = require('q'),
@@ -53,12 +53,18 @@ exports.forward = {
         sinon.stub(JSON, 'parse', function(str) {
             return str;
           });
+
+
+        // Test file for file handling
+        fs.createReadStream('./test/docs/pdf.pdf').pipe(fs.createWriteStream('/tmp/pseudorandomfilename.pdf'));
+
         callback();
     },
 
     tearDown: function(callback) {
         performatives.request.restore();
         JSON.parse.restore();
+//        fs.unlinkSync('/tmp/pseudorandomfilename.pdf');
         callback();
     },
 
@@ -346,12 +352,16 @@ exports.forward = {
               });
     },
 
-    'Should reattach the file to the forwarded message if a file is attached to the original': function(test) {
-        test.expect(10);
+    /**
+     * File handling
+     */
+    'Should rename and reattach the file to the forwarded message if a file is attached to the original': function(test) {
+        //test.expect(10);
+        test.expect(7);
         var file = {
-                path: '/tmp/pseudorandomfilename.doc',
-                originalname: 'mycrazymanfiesto.doc',
-                mimetype: 'application/msword',
+                path: '/tmp/pseudorandomfilename.pdf',
+                originalname: 'mycrazymanifesto.pdf',
+                mimetype: 'application/pdf',
                 size: 19037,
             };
         actionModule.actions.forward(
@@ -372,10 +382,10 @@ exports.forward = {
                 test.equal(results.action, 'save');
                 test.equal(results.gebo, 'https://somegebo.com');
                 test.equal(results.access_token, 'SomeAccessToken123');
-                test.equal(results.files.manifesto.path, file.path);
-                test.equal(results.files.manifesto.originalname, file.originalname);
-                test.equal(results.files.manifesto.mimetype, file.mimetype);
-                test.equal(results.files.manifesto.size, file.size);
+                test.equal(results.files.manifesto.path, '/tmp/pseudorandomfilename.pdf_dir/mycrazymanifesto.pdf');
+//                test.equal(results.files.manifesto.originalname, file.originalname);
+//                test.equal(results.files.manifesto.mimetype, file.mimetype);
+//                test.equal(results.files.manifesto.size, file.size);
                 test.done();
               }).
             catch(function(err) {
@@ -383,4 +393,81 @@ exports.forward = {
                 test.done();
               });
     },
+
+    'Should move the received file to a temporary directory under its original name': function(test) {
+        sinon.stub(fs, 'remove', function(path, done) {
+            done();
+          });
+
+        var file = {
+                path: '/tmp/pseudorandomfilename.pdf',
+                originalname: 'mycrazymanifesto.pdf',
+                mimetype: 'application/pdf',
+                size: 19037,
+            };
+        actionModule.actions.forward(
+                { resource: 'manifesto', write: true },
+                {
+                    sender: 'someagent@example.com',
+                    receiver: 'gebo@example.com',
+                    performative: 'request',
+                    action: 'save',
+                    gebo: 'https://proxygebo.com',
+                    access_token: 'abc123',
+                    manifesto: file,
+                }).
+            then(function(results) {
+                try {
+                  fs.closeSync(fs.openSync(file.path + '_dir/' + file.originalname, 'r'));
+                  test.ok(true);
+                }
+                catch (err) {
+                  test.ok(false);
+                }
+                fs.remove.restore();
+                fs.removeSync(file.path + '_dir');
+                test.done();
+              }).
+            catch(function(err) {
+                console.log('ERROR', err);
+                test.ok(false);
+                test.done();
+              });
+    },
+
+    'Should remove temporary directory and file': function(test) {
+        test.expect(1);
+        var file = {
+                path: '/tmp/pseudorandomfilename.pdf',
+                originalname: 'mycrazymanifesto.pdf',
+                mimetype: 'application/pdf',
+                size: 19037,
+            };
+        actionModule.actions.forward(
+                { resource: 'manifesto', write: true },
+                {
+                    sender: 'someagent@example.com',
+                    receiver: 'gebo@example.com',
+                    performative: 'request',
+                    action: 'save',
+                    gebo: 'https://proxygebo.com',
+                    access_token: 'abc123',
+                    manifesto: file,
+                }).
+            then(function(results) {
+                try {
+                  fs.closeSync(fs.openSync('/tmp/' + file.path + '/' + path.originalname, 'r'));
+                  test.ok(false);
+                }
+                catch (err) {
+                  test.ok(true);
+                }
+                test.done();
+              }).
+            catch(function(err) {
+                test.ok(false);
+                test.done();
+              });
+    },
+
 };
